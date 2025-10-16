@@ -9,6 +9,14 @@ A self-hosted, database-less note-taking web app that utilises a flat folder of 
 
 Log into the [demo site](https://demo.flatnotes.io) and take a look around. *Note: This site resets every 15 minutes.*
 
+## Branches / Changes to upstream
+
+- [develop](https://github.com/72nd/flatnotes/tree/develop) - Forked branch from upstream. No changes were made.
+- [my-develop](https://github.com/72nd/flatnotes/tree/my-develop) – This branch. Contains all changes made by this repo by merging in all branches.
+- [attachments](https://github.com/72nd/flatnotes/tree/attachments) – Adds a new toolbar item to upload any file as a attachment to a note.
+- [closeable-toast](https://github.com/72nd/flatnotes/tree/closable-toast) – Makes the toast notifications closeable as they overlap UI elements.
+- [dev-enviroment](https://github.com/72nd/flatnotes/tree/dev-enviroment) – Adds a development environment setup guide to the CONTRIBUTING.md file. Sorry for the typo.
+
 ## Contents
 
 * [Design Principle](#design-principle)
