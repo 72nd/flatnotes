@@ -3,7 +3,7 @@ export function getToastOptions(description, title, severity) {
     summary: title,
     detail: description,
     severity: severity,
-    closable: false,
+    closable: true,
     life: 5000,
   };
 }
