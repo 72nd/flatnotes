@@ -28,12 +28,12 @@ If you're interested in adding a new feature to flatnotes, then please open an i
    npm install
    ```
 
-3. (Optional) Create a `.env` file in the project root for environment variables:
+3. Create a `.env` file in the project root for environment variables:
    ```bash
    FLATNOTES_AUTH_TYPE=none
    FLATNOTES_PATH=./data
    ```
-   Pipenv will automatically load variables from `.env` when running commands.
+   Pipenv will automatically load variables from `.env` when running commands. See the [Environment Variables Section in the wiki](https://github.com/dullage/flatnotes/wiki/Environment-Variables) for a full list of available variables.
 
 ### Running the Development Environment
 
