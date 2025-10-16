@@ -11,7 +11,7 @@ Log into the [demo site](https://demo.flatnotes.io) and take a look around. *Not
 
 ## How to run all changes
 
-The [dev-enviroment](https://github.com/72nd/flatnotes/tree/dev-enviroment) branch contains all changes made by this repo. In order to run the application please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+The [my-develop](https://github.com/72nd/flatnotes/tree/my-develop) branch contains all changes made by this repo. In order to run the application please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## Branches / Changes to upstream
 
