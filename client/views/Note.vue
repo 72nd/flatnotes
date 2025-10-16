@@ -101,6 +101,7 @@
         :initialValue="getInitialEditorValue()"
         :initialEditType="loadDefaultEditorMode()"
         :addImageBlobHook="addImageBlobHook"
+        :attachFileHandler="attachFileHandler"
         @change="startContentChangedTimeout"
         @keydown="keydownHandler"
       />
@@ -369,6 +370,16 @@ function addImageBlobHook(file, callback) {
       // If the user has entered an alt text, use it. Otherwise, use the filename returned by the API.
       const altText = altTextInputValue ? altTextInputValue : data.filename;
       callback(data.url, altText);
+    }
+  });
+}
+
+// File Attachment
+function attachFileHandler(file, callback) {
+  // Upload the file then use the callback to insert the link into the editor
+  postAttachment(file).then(function (data) {
+    if (data) {
+      callback(data.url, data.filename);
     }
   });
 }
