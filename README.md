@@ -9,6 +9,10 @@ A self-hosted, database-less note-taking web app that utilises a flat folder of 
 
 Log into the [demo site](https://demo.flatnotes.io) and take a look around. *Note: This site resets every 15 minutes.*
 
+## How to run all changes
+
+The [dev-enviroment](https://github.com/72nd/flatnotes/tree/dev-enviroment) branch contains all changes made by this repo. In order to run the application please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
 ## Branches / Changes to upstream
 
 - [develop](https://github.com/72nd/flatnotes/tree/develop) - Forked branch from upstream. No changes were made.
