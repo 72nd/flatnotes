@@ -15,6 +15,7 @@ class GlobalConfig:
         self.quick_access_sort: str = self._quick_access_sort()
         self.quick_access_limit: int = self._quick_access_limit()
         self.path_prefix: str = self._load_path_prefix()
+        self.tag_warn: bool = self._tag_warn()
 
     def load_auth(self):
         if self.auth_type in (AuthType.NONE, AuthType.READ_ONLY):
@@ -101,6 +102,10 @@ class GlobalConfig:
             sys.exit(1)
         return value
 
+    def _tag_warn(self):
+        key = "FLATNOTES_TAG_WARN"
+        return get_env(key, mandatory=False, default=False, cast_bool=True)
+
 
 class AuthType(str, Enum):
     NONE = "none"
@@ -116,3 +121,4 @@ class GlobalConfigResponseModel(CustomBaseModel):
     quick_access_term: str
     quick_access_sort: str
     quick_access_limit: int
+    tag_warn: bool
