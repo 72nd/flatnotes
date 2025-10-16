@@ -15,6 +15,7 @@ const props = defineProps({
     default: "markdown",
   },
   addImageBlobHook: Function,
+  attachFileHandler: Function,
 });
 
 const emit = defineEmits(["change", "keydown"]);
@@ -40,7 +41,52 @@ onMounted(() => {
       ? { addImageBlobHook: props.addImageBlobHook }
       : {},
   });
+  toastEditor.insertToolbarItem(
+    { groupIndex: 4, itemIndex: 0 },
+    {
+      el: createAttachFileButton(),
+      name: "attachFile",
+      tooltip: "Attach File",
+    },
+  );
 });
+
+function createAttachFileButton() {
+  const button = document.createElement("button");
+  button.className = "toastui-editor-toolbar-icons";
+  button.style.backgroundImage = "none";
+  button.style.margin = "0";
+  button.textContent = "📎";
+  button.addEventListener("click", openFileDialog);
+  return button;
+}
+
+function openFileDialog() {
+  // Create file input dynamically
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.style.display = "none";
+  
+  // Handle file selection
+  fileInput.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (file && props.attachFileHandler) {
+      props.attachFileHandler(file, insertLink);
+    }
+    // Clean up: remove the file input after use
+    fileInput.remove();
+  });
+  
+  // Trigger file selection dialog
+  fileInput.click();
+}
+
+function insertLink(url, filename) {
+  // Use replaceSelection to insert raw markdown without escaping
+  const markdown = `[${filename}](${url})`;
+  const editor = toastEditor.getCurrentModeEditor();
+  editor.replaceSelection(markdown);
+}
 
 function getMarkdown() {
   return toastEditor.getMarkdown();
