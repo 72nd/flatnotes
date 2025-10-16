@@ -200,4 +200,12 @@ watch(
     searchTerm.value = props.initialSearchTerm;
   },
 );
+
+defineExpose({
+  focusAndSetValue(value) {
+    searchTerm.value = value;
+    input.value.focus();
+    stateChangeHandler();
+  },
+});
 </script>

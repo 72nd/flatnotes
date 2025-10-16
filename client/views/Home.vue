@@ -2,7 +2,10 @@
   <div class="flex h-full justify-center">
     <div class="flex max-w-[500px] flex-1 flex-col items-center pt-[25vh]">
       <Logo class="mb-5" />
-      <SearchInput class="mb-5 shadow-[0_0_20px] shadow-theme-shadow" />
+      <SearchInput
+        ref="searchInput"
+        class="mb-5 shadow-[0_0_20px] shadow-theme-shadow"
+      />
       <LoadingIndicator
         ref="loadingIndicator"
         class="flex min-h-56 flex-col items-center"
@@ -34,6 +37,32 @@
           ><CustomButton :iconPath="mdiDotsHorizontal"
         /></RouterLink>
       </LoadingIndicator>
+      <div
+        v-if="
+          globalStore.config.quickAccessTags &&
+          globalStore.config.quickAccessTags.length > 0
+        "
+        class="flex min-h-56 flex-col items-center"
+      >
+        <p class="mb-2 text-xs font-bold uppercase text-theme-text-very-muted">
+          TAGS
+        </p>
+        <RouterLink
+          v-for="tag in globalStore.config.quickAccessTags"
+          :to="{
+            name: 'search',
+            query: { term: '#' + tag },
+          }"
+          class="mb-1"
+        >
+          <CustomButton :label="'#' + tag" />
+        </RouterLink>
+        <CustomButton
+          :iconPath="mdiDotsHorizontal"
+          title="Show all tags"
+          @click="showAllTags"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -55,6 +84,7 @@ import SearchInput from "../partials/SearchInput.vue";
 const globalStore = useGlobalStore();
 const loadingIndicator = ref();
 const notes = ref([]);
+const searchInput = ref();
 const toast = useToast();
 
 function init() {
@@ -79,6 +109,10 @@ function init() {
       loadingIndicator.value.setFailed();
       apiErrorHandler(error, toast);
     });
+}
+
+function showAllTags() {
+  searchInput.value.focusAndSetValue("#");
 }
 
 // Watch to allow for delayed config load.

@@ -191,6 +191,7 @@ def get_config():
         quick_access_sort=global_config.quick_access_sort,
         quick_access_limit=global_config.quick_access_limit,
         tag_warn=global_config.tag_warn,
+        quick_access_tags=global_config.quick_access_tags,
     )
 
 
