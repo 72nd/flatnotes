@@ -268,8 +268,22 @@ function saveHandler(close = false) {
     return;
   }
 
-  // Save Note
+  // Tag Warning
   let newContent = toastEditor.value.getMarkdown();
+  if (globalStore.config.tagWarn) {
+    const tagPattern = /(?:^|\s)(#[a-zA-Z0-9_-]+)(?=\s|$)/;
+    if (!tagPattern.test(newContent)) {
+      toast.add(
+        getToastOptions(
+          "No tags found. Tags (like #project) help you find notes faster.",
+          "Warning",
+          "warning",
+        ),
+      );
+    }
+  }
+
+  // Save Note
   if (isNewNote.value) {
     saveNew(newTitle.value, newContent, close);
   } else {
