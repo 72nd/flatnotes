@@ -16,6 +16,7 @@ Log into the [demo site](https://demo.flatnotes.io) and take a look around. *Not
 - [attachments](https://github.com/72nd/flatnotes/tree/attachments) – Adds a new toolbar item to upload any file as a attachment to a note.
 - [closeable-toast](https://github.com/72nd/flatnotes/tree/closable-toast) – Makes the toast notifications closeable as they overlap UI elements.
 - [dev-enviroment](https://github.com/72nd/flatnotes/tree/dev-enviroment) – Adds a development environment setup guide to the CONTRIBUTING.md file. Sorry for the typo.
+- [tag-warn](https://github.com/72nd/flatnotes/tree/tag-warn) – Adds a warning toast when no tags are found in a note. Has to be enabled by setting the `FLATNOTES_TAG_WARN` environment variable to `true`. I don't think this is a candidate for upstream.
 
 ## Contents
 
