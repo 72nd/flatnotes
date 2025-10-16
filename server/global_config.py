@@ -14,6 +14,7 @@ class GlobalConfig:
         self.quick_access_term: str = self._quick_access_term()
         self.quick_access_sort: str = self._quick_access_sort()
         self.quick_access_limit: int = self._quick_access_limit()
+        self.quick_access_tags: list[str] = self._quick_access_tags()
         self.path_prefix: str = self._load_path_prefix()
 
     def load_auth(self):
@@ -90,6 +91,13 @@ class GlobalConfig:
         key = "FLATNOTES_QUICK_ACCESS_LIMIT"
         return get_env(key, mandatory=False, default=4, cast_int=True)
 
+    def _quick_access_tags(self):
+        key = "FLATNOTES_QUICK_ACCESS_TAGS"
+        value = get_env(key, mandatory=False, default="")
+        if not value:
+            return []
+        return [tag.strip() for tag in value.split(",") if tag.strip()]
+
     def _load_path_prefix(self):
         key = "FLATNOTES_PATH_PREFIX"
         value = get_env(key, mandatory=False, default="")
@@ -116,3 +124,4 @@ class GlobalConfigResponseModel(CustomBaseModel):
     quick_access_term: str
     quick_access_sort: str
     quick_access_limit: int
+    quick_access_tags: list[str]
