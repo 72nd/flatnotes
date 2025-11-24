@@ -88,6 +88,27 @@
 
     <hr v-if="!editMode" class="my-4 border-theme-border" />
 
+    <!-- Template Selector -->
+    <div
+      v-if="editMode && showTemplateSelector"
+      class="mb-4"
+    >
+      <select
+        v-model="selectedTemplate"
+        @change="applyTemplate"
+        class="w-full rounded-md border border-theme-border px-3 py-2 focus:outline-none dark:bg-theme-background-elevated"
+      >
+        <option value="">Select a template...</option>
+        <option
+          v-for="template in availableTemplates"
+          :key="template.title"
+          :value="template.title"
+        >
+          {{ template.title }}
+        </option>
+      </select>
+    </div>
+
     <!-- Content -->
     <div class="flex-1">
       <ToastViewer
@@ -133,6 +154,7 @@ import {
   createNote,
   deleteNote,
   getNote,
+  getNotes,
   updateNote,
 } from "../api.js";
 import { Note } from "../classes.js";
@@ -169,9 +191,19 @@ const newTitle = ref();
 const toast = useToast();
 const toastEditor = ref();
 const unsavedChanges = ref(false);
+const availableTemplates = ref([]);
+const selectedTemplate = ref("");
+const editorHasContent = ref(false);
+const showTemplateSelector = computed(
+  () =>
+    globalStore.config.templateTag &&
+    isNewNote.value &&
+    !editorHasContent.value &&
+    availableTemplates.value.length > 0,
+);
 
 function init() {
-  // Return if we already have the note e.g. When we rename a note, the route prop would change but we’d already have the note.
+  // Return if we already have the note e.g. When we rename a note, the route prop would change but we'd already have the note.
   if (props.title && props.title == note.value.title) {
     return;
   }
@@ -201,8 +233,40 @@ function init() {
     nextTick(() => {
       editHandler();
       loadingIndicator.value.setLoaded();
+      loadTemplates();
     });
   }
+}
+
+// Template Handling
+function loadTemplates() {
+  if (!globalStore.config.templateTag) {
+    return;
+  }
+  getNotes(`#${globalStore.config.templateTag}`, "title", "asc")
+    .then((data) => {
+      availableTemplates.value = data;
+    })
+    .catch((error) => {
+      apiErrorHandler(error, toast);
+    });
+}
+
+function applyTemplate() {
+  if (!selectedTemplate.value) {
+    return;
+  }
+  getNote(selectedTemplate.value)
+    .then((templateNote) => {
+      if (toastEditor.value) {
+        toastEditor.value.setMarkdown(templateNote.content);
+        editorHasContent.value = true;
+      }
+      selectedTemplate.value = "";
+    })
+    .catch((error) => {
+      apiErrorHandler(error, toast);
+    });
 }
 
 // Note Editing
@@ -227,6 +291,13 @@ function setEditMode() {
   newTitle.value = note.value.title;
   unsavedChanges.value = false;
   editMode.value = true;
+  // Check if editor will have content (e.g., from draft or existing note)
+  nextTick(() => {
+    if (toastEditor.value) {
+      const content = toastEditor.value.getMarkdown();
+      editorHasContent.value = content && content.trim().length > 0;
+    }
+  });
 }
 
 function getInitialEditorValue() {
@@ -453,6 +524,12 @@ function clearContentChangedTimeout() {
 }
 
 function contentChangedHandler() {
+  // Track if editor has content for template selector visibility
+  if (toastEditor.value) {
+    const content = toastEditor.value.getMarkdown();
+    editorHasContent.value = content && content.trim().length > 0;
+  }
+
   if (isContentChanged()) {
     unsavedChanges.value = true;
     setBeforeUnloadConfirmation(true);

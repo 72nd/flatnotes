@@ -17,6 +17,7 @@ class GlobalConfig:
         self.quick_access_tags: list[str] = self._quick_access_tags()
         self.path_prefix: str = self._load_path_prefix()
         self.tag_warn: bool = self._tag_warn()
+        self.template_tag: str = self._template_tag()
 
     def load_auth(self):
         if self.auth_type in (AuthType.NONE, AuthType.READ_ONLY):
@@ -114,6 +115,10 @@ class GlobalConfig:
         key = "FLATNOTES_TAG_WARN"
         return get_env(key, mandatory=False, default=False, cast_bool=True)
 
+    def _template_tag(self):
+        key = "FLATNOTES_TEMPLATE_TAG"
+        return get_env(key, mandatory=False, default="")
+
 
 class AuthType(str, Enum):
     NONE = "none"
@@ -131,3 +136,4 @@ class GlobalConfigResponseModel(CustomBaseModel):
     quick_access_limit: int
     tag_warn: bool
     quick_access_tags: list[str]
+    template_tag: str
